@@ -63,18 +63,20 @@ namespace PersonalFinance
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebAPIv5 v1"));
             }
-           
+
+
+
+            app.UseMiddleware<ErrorHandlerMiddleware>();
+
+           // app.UseHttpsRedirection();
+
+            app.UseRouting();
 
             app.UseCors(x => x
                     .AllowAnyOrigin()
                     .AllowAnyMethod()
                     .AllowAnyHeader());
             // global error handler
-            app.UseMiddleware<ErrorHandlerMiddleware>();
-
-           // app.UseHttpsRedirection();
-
-            app.UseRouting();
 
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
