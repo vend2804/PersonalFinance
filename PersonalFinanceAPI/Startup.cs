@@ -15,6 +15,11 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Persistance;
 using PersonalFinance.Helpers;
+using Application.Activities;
+using MediatR;
+using AutoMapper;
+using Application.Core;
+using PersonalFinanceAPI.Extensions;
 
 namespace PersonalFinance
 {
@@ -42,16 +47,8 @@ namespace PersonalFinance
                 // ignore omitted parameters on models to enable optional params (e.g. User update)
                 x.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
             });
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebAPIv5", Version = "v1" });
-            });
-            services.AddDbContext<DataContext>(opt =>
-            {
-                opt.UseSqlite(_config.GetConnectionString("DefaultConnection"));
-            });
-            services.AddEndpointsApiExplorer();
-            services.AddCors();
+
+            services.AddApplicationServices(_config);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

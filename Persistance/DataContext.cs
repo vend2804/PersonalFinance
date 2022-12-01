@@ -15,6 +15,12 @@ namespace Persistance
 
         }
         public DbSet<Activity> Activities { get; set; } = null!;
+         public DbSet<Category> Category_Details { get; set; } = null!;
+         public DbSet<Item> Item_Details { get; set; } = null!;
+
+        public DbSet<Expense> Expense_Details { get; set; } = null!;
+
+        public DbSet<Revenue> Revenue_Details { get; set; } = null!;
 
     }
 }
