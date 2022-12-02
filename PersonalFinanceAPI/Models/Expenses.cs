@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PersonalFinance.Models
 {
-    public class Expense
+    public class Expenses
     {
         [Key]
         public int Exp_Id { get; set; }
@@ -22,7 +22,7 @@ namespace PersonalFinance.Models
         public string? Exp_Month_Year { get; set; }
 
         public bool? Finalized { get; set; }
-       
+
         [ForeignKey("Item_Id")]
         public virtual Items? Items { get; set; }
     }

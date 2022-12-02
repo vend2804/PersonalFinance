@@ -17,10 +17,10 @@ namespace PersonalFinance.Controllers
             _dbContext = dbContext;
         }
 
-       
+
         //GET: api/Expense
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Expense>>> GetExpenses()
+        public async Task<ActionResult<IEnumerable<Expenses>>> GetExpenses()
         {
             if (_dbContext.Expense_Details == null)
             {
@@ -33,7 +33,7 @@ namespace PersonalFinance.Controllers
 
         // GET api/Epense/5
         [HttpGet("{Exp_Id}")]
-        public async Task<ActionResult<Expense>> GetExpenses(int Exp_Id)
+        public async Task<ActionResult<Expenses>> GetExpenses(int Exp_Id)
         {
             if (_dbContext.Expense_Details == null)
             {
@@ -47,7 +47,7 @@ namespace PersonalFinance.Controllers
 
         // POST: api/Categories
         [HttpPost]
-        public async Task<ActionResult<Expense>> PostExpense(Expense expense)
+        public async Task<ActionResult<Expenses>> PostExpense(Expenses expense)
         {
             _dbContext.Expense_Details.Add(expense);
             await _dbContext.SaveChangesAsync();
@@ -57,7 +57,7 @@ namespace PersonalFinance.Controllers
         // PUT: api/Categories/5
 
         [HttpPut("{Exp_Id}")]
-        public async Task<IActionResult> PutExpense(int Exp_Id, Expense expense)
+        public async Task<IActionResult> PutExpense(int Exp_Id, Expenses expense)
         {
             if (Exp_Id != expense.Exp_Id)
             {
@@ -117,7 +117,7 @@ namespace PersonalFinance.Controllers
             return (_dbContext.Expense_Details?.Any(e => e.Exp_Id == exp_id)).GetValueOrDefault();
             //throw new NotImplementedException();
         }
-    
+
 
     }
 }

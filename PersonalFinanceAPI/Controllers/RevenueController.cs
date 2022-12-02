@@ -17,10 +17,10 @@ namespace PersonalFinance.Controllers
             _dbContext = dbContext;
         }
 
-   
+
         //GET: api/Revenue
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Revenue>>> GetRevenues()
+        public async Task<ActionResult<IEnumerable<Revenues>>> GetRevenues()
         {
             if (_dbContext.Revenue_Details == null)
             {
@@ -33,7 +33,7 @@ namespace PersonalFinance.Controllers
 
         // GET api/Revenue/5
         [HttpGet("{Rev_Id}")]
-        public async Task<ActionResult<Revenue>> GetRevenues(int Rev_Id)
+        public async Task<ActionResult<Revenues>> GetRevenues(int Rev_Id)
         {
             if (_dbContext.Revenue_Details == null)
             {
@@ -47,7 +47,7 @@ namespace PersonalFinance.Controllers
 
         // POST: api/Revenue
         [HttpPost]
-        public async Task<ActionResult<Revenue>> PostRevenues(Revenue revenue)
+        public async Task<ActionResult<Revenues>> PostRevenues(Revenues revenue)
         {
             _dbContext.Revenue_Details.Add(revenue);
             await _dbContext.SaveChangesAsync();
@@ -57,7 +57,7 @@ namespace PersonalFinance.Controllers
         // PUT: api/Revenue/5
 
         [HttpPut("{Rev_Id}")]
-        public async Task<IActionResult> PutRevenue(int Rev_Id, Revenue revenue)
+        public async Task<IActionResult> PutRevenue(int Rev_Id, Revenues revenue)
         {
             if (Rev_Id != revenue.Rev_Id)
             {
@@ -117,6 +117,6 @@ namespace PersonalFinance.Controllers
             return (_dbContext.Revenue_Details?.Any(e => e.Rev_Id == rev_id)).GetValueOrDefault();
             //throw new NotImplementedException();
         }
-      
+
     }
 }

@@ -18,9 +18,9 @@ namespace PersonalFinance.Helpers
                public DbSet<Categories> Category_Details { get; set; } = null!;
                public DbSet<Items> Item_Details { get; set; } = null!;
 
-               public DbSet<Expense> Expense_Details { get; set; } = null!;
+               public DbSet<Expenses> Expense_Details { get; set; } = null!;
 
-               public DbSet<Revenue> Revenue_Details { get; set; } = null!;
+               public DbSet<Revenues> Revenue_Details { get; set; } = null!;
 
     }
 }

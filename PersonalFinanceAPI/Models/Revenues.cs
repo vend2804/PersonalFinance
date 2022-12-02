@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PersonalFinance.Models
 {
-    public class Revenue
+    public class Revenues
     {
         [Key]
         public int Rev_Id { get; set; }
