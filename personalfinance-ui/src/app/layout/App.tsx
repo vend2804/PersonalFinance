@@ -1,41 +1,27 @@
-import React, { Fragment, useEffect } from "react";
+import React from "react";
 //import axios from "axios";
 import { Container } from "semantic-ui-react";
-
 import NavBar from "./NavBar";
-import ActivityDashboard from "../../features/activities/dashboard/ActivityDashboard";
-
-import LoadingComponent from "./LoadingComponent";
-import { useStore } from "../stores/store";
 import { observer } from "mobx-react-lite";
+import { Outlet, useLocation } from "react-router-dom";
+import HomePage from "../../features/home/HomePage";
 
 function App() {
-  const { activityStore } = useStore();
-
- // const [activities, setActivities] = useState<Activity[]>([]);
-  //const [selectedActivity, setSelectedActivity] = useState<Activity | undefined>(undefined);
-  //const [editMode, setEditMode] = useState(false);
-
-  //const [loading, setLoading] = useState(true);
-
-  //const [submitting, setSubmitting] = useState(false);
-
-  useEffect(() => {
-    activityStore.loadActivities();
-  }, [activityStore]);
-
-
-
-  if (activityStore.loadingInitial)
-    return <LoadingComponent content="loading app" />;
-
+  const location = useLocation();
   return (
-    <Fragment>
-      <NavBar />
+    <>
+{location.pathname === '/' ? <HomePage/> : (
+  <>
+    <NavBar />
+
       <Container style={{ marginTop: "7em" }}>
-        <ActivityDashboard />
+        <Outlet />
       </Container>
-    </Fragment>
+  </>
+
+)}
+
+    </>
   );
 }
 
