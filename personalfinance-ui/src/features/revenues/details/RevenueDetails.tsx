@@ -1,18 +1,24 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { Link, useParams } from "react-router-dom";
 import { Card, Image, Button } from "semantic-ui-react";
 import LoadingComponent from "../../../app/layout/LoadingComponent";
-
 import { useStore } from "../../../app/stores/store";
 
 export default function RevenueDetails() {
   const { revenueStore } = useStore();
   const {
     selectedRevenue: revenue,
-    openForm,
-    cancelSelectedRevenue,
+    loadRevenue,
+    loadingInitial,
   } = revenueStore;
 
-  if (!revenue) return <LoadingComponent />;
+  const { id } = useParams();
+
+  useEffect(() => {
+    if (id) loadRevenue(id);
+  }, [id, loadRevenue]);
+
+  if (loadingInitial || !revenue) return <LoadingComponent />;
   return (
     <Card fluid>
       <Image src={`/assets/categoryImages/${revenue?.rev_By}.jpg`} />
@@ -26,13 +32,15 @@ export default function RevenueDetails() {
       <Card.Content extra>
         <Button.Group widths="2">
           <Button
+            as={Link}
+            to={`/managerevenues/${revenue.rev_Id}`}
             basic
             color="blue"
             content="Edit"
-            onClick={() => openForm(revenue.rev_Id)}
           />
           <Button
-            onClick={cancelSelectedRevenue}
+            as={Link}
+            to="/revenues"
             basic
             color="grey"
             content="Cancel"

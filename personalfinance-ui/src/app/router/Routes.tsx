@@ -20,7 +20,8 @@ export const routes: RouteObject[] = [
       { path: "revenues", element: <RevenueDashboard /> },
       { path: "revenues/:id", element: <RevenueDetails /> },
 
-      { path: "createRevenue", element: <RevenueForm /> },
+      { path: "createRevenue", element: <RevenueForm key='createrev' /> },
+      { path: "managerevenues/:id", element: <RevenueForm  key='managerevenue'/> },
     ],
   },
 ];

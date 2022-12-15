@@ -2,7 +2,6 @@ import { makeAutoObservable, runInAction } from "mobx";
 import { Revenue } from "../models/revenue";
 import agent from "../api/agent";
 
-
 export default class RevenueStore {
   // activities: Activity[] = [];
   revenueRegistry = new Map<string, Revenue>();
@@ -12,7 +11,6 @@ export default class RevenueStore {
 
   loading = false;
   loadingInitial = true;
-
 
   constructor() {
     makeAutoObservable(this);
@@ -24,14 +22,12 @@ export default class RevenueStore {
     );
   }
   loadRevenues = async () => {
-    //this.setLoadingInitial(true);
+    this.setLoadingInitial(true);
     try {
       const revenues = await agent.Revenues.list();
 
       revenues.forEach((revenue) => {
-        revenue.rev_Date = revenue.rev_Date.split("T")[0];
-        //this.activities.push(activity);
-        this.revenueRegistry.set(revenue.rev_Id, revenue);
+        this.setRevenue(revenue);
       });
       this.setLoadingInitial(false);
       //this.revenueMode = true;
@@ -39,37 +35,50 @@ export default class RevenueStore {
       console.log(error);
 
       this.setLoadingInitial(false);
-     // this.revenueMode = true;
+      // this.revenueMode = true;
     }
+  };
+  loadRevenue = async (id: string) => {
+    let revenue = this.getRevenue(id);
+    if (revenue) {
+      this.selectedRevenue = revenue;
+      return revenue;
+    } else {
+      this.setLoadingInitial(true);
+      try {
+        revenue = await agent.Revenues.details(id);
+        this.setRevenue(revenue);
+        runInAction(() => {
+          this.selectedRevenue = revenue;
+        });
+
+        this.setLoadingInitial(false);
+        return revenue;
+      } catch (error) {
+        console.log(error);
+        this.setLoadingInitial(false);
+      }
+    }
+  };
+
+  private setRevenue = (revenue: Revenue) => {
+    revenue.rev_Date = revenue.rev_Date.split("T")[0];
+    //this.activities.push(activity);
+    this.revenueRegistry.set(revenue.rev_Id, revenue);
+  };
+  private getRevenue = (id: string) => {
+    return this.revenueRegistry.get(id);
   };
 
   setLoadingInitial = (state: boolean) => {
     this.loadingInitial = state;
   };
 
-  selectRevenue = (id: string) => {
-    // this.selectedActivity = this.activities.find((a) => a.id === id);
-    this.selectedRevenue = this.revenueRegistry.get(id);
-  };
-
-  cancelSelectedRevenue = () => {
-    this.selectedRevenue = undefined!;
-  };
-
-  openForm = (id?: string) => {
-    id ? this.selectRevenue(id) : this.cancelSelectedRevenue();
-    this.editMode = true;
-  };
-
-  closeForm = () => {
-    this.editMode = false;
-  };
-
   // method for Create Activity using the Stores using MobX
 
   createRevenue = async (revenue: Revenue) => {
     this.loading = true;
-    //revenue.id = uuid();
+    //revenue.rev_Id =1 //revenue.rev_Id;
     try {
       await agent.Revenues.create(revenue);
       runInAction(() => {
@@ -109,15 +118,12 @@ export default class RevenueStore {
   deleteRevenue = async (id: string) => {
     this.loading = true;
     try {
-      await agent.Revenues.delete(id.toString());
+      await agent.Revenues.delete(id);
       // this.activities = [...this.activities.filter((a) => a.id !== id)];
-      this.revenueRegistry.delete(id);
-      if (this.selectedRevenue?.rev_Id === id) {
-        this.cancelSelectedRevenue();
-      }
-
-      this.loading = false;
-      runInAction(() => {});
+      runInAction(() => {
+        this.revenueRegistry.delete(id);
+        this.loading = false;
+      });
     } catch (error) {
       runInAction(() => {
         this.loading = false;

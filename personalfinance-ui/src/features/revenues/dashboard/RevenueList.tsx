@@ -4,6 +4,7 @@ import { Item, Segment, Button, Label } from "semantic-ui-react";
 import { useState } from "react";
 import { useStore } from "../../../app/stores/store";
 import { observer } from "mobx-react-lite";
+import { Link } from "react-router-dom";
 
 export default observer(function RevenueList() {
   const { revenueStore } = useStore();
@@ -35,7 +36,8 @@ export default observer(function RevenueList() {
               </Item.Description>
               <Item.Extra>
                 <Button
-                  onClick={() => revenueStore.selectRevenue(revenue.rev_Id)}
+                  as={Link}
+                  to={`/revenues/${revenue.rev_Id}`}
                   floated="right"
                   content="view"
                   color="blue"

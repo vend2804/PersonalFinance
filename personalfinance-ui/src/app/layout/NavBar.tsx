@@ -32,7 +32,7 @@ export default function NavBar() {
             content="Add Revenue"
           />
         </Menu.Item>
-        <Menu.Item as={NavLink} to="/expenses" name="Revenues" />
+        <Menu.Item as={NavLink} to="/expenses" name="Expenses" />
         <Menu.Item>
           <Button
            as={NavLink} to='/createExpense'
