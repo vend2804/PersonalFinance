@@ -11,6 +11,8 @@ using MediatR;
 using Application.Core;
 using Application.Activities;
 using AutoMapper;
+using FluentValidation.AspNetCore;
+using FluentValidation;
 
 namespace PersonalFinanceAPI.Extensions
 {
@@ -31,6 +33,8 @@ namespace PersonalFinanceAPI.Extensions
             services.AddCors();
             services.AddMediatR(typeof(List.Handler).Assembly);
             services.AddAutoMapper(typeof(MappingProfiles).Assembly);
+            services.AddFluentValidationAutoValidation();
+            services.AddValidatorsFromAssemblyContaining<Create>();
 
             return services;
 

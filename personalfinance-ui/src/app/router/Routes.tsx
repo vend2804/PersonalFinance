@@ -1,4 +1,4 @@
-import { createBrowserRouter, RouteObject } from "react-router-dom";
+import { createBrowserRouter, Navigate, RouteObject } from "react-router-dom";
 import App from "../layout/App";
 import ActivityDashboard from "../../features/activities/dashboard/ActivityDashboard";
 import RevenueDashboard from "../../features/revenues/dashboard/RevenueDashboard";
@@ -6,6 +6,9 @@ import ActivityForm from "../../features/activities/form/ActivityForm";
 import RevenueForm from "../../features/revenues/form/RevenueForm";
 import ActivityDetails from "../../features/activities/details/ActivityDetails";
 import RevenueDetails from "../../features/revenues/details/RevenueDetails";
+import TestErrors from '../../features/errors/TestError';
+import NotFound from "../../features/errors/NotFound";
+import ServerError from "../../features/errors/ServerError";
 
 export const routes: RouteObject[] = [
   {
@@ -22,6 +25,10 @@ export const routes: RouteObject[] = [
 
       { path: "createRevenue", element: <RevenueForm key='createrev' /> },
       { path: "managerevenues/:id", element: <RevenueForm  key='managerevenue'/> },
+      { path: "errors", element: <TestErrors/> },
+      { path: "not-found", element: <NotFound/> },
+      { path: "server-error", element: <ServerError/> },
+      { path: "*", element: <Navigate replace to='/not-found' /> },
     ],
   },
 ];
