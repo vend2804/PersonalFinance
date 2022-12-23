@@ -21,6 +21,8 @@ using AutoMapper;
 using Application.Core;
 using PersonalFinanceAPI.Extensions;
 using PersonalFinanceAPI.Middleware;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
 
 namespace PersonalFinance
 {
@@ -40,7 +42,11 @@ namespace PersonalFinance
 
            // services.AddDbContext<PersonalFinanceContext>(options =>
            // options.UseSqlServer(Configuration.GetConnectionString("PersonalFinanceContext")));
-            services.AddControllers().AddJsonOptions(x =>
+            services.AddControllers(opt =>{
+                var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+                opt.Filters.Add(new AuthorizeFilter(policy));
+            })
+            .AddJsonOptions(x =>
             {
                 // serialize enums as strings in api responses (e.g. Role)
                 x.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
@@ -50,6 +56,7 @@ namespace PersonalFinance
             });
 
             services.AddApplicationServices(_config);
+            services.AddIdentityServices(_config);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -78,7 +85,9 @@ namespace PersonalFinance
                     .AllowAnyHeader());
             // global error handler
 
+            app.UseAuthentication();
             app.UseAuthorization();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

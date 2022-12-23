@@ -10,6 +10,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Persistance;
+using Microsoft.AspNetCore.Identity;
+using Domain;
 
 namespace PersonalFinance
 
@@ -25,15 +27,16 @@ namespace PersonalFinance
             try
             {
                 var context = services.GetRequiredService<DataContext>();
+                var userManager = services.GetRequiredService<UserManager<AppUser>>();
                 await context.Database.MigrateAsync();
-                await Seed.SeedData(context);
+                await Seed.SeedData(context, userManager);
 
             }
             catch (Exception ex) {
                 var message = services.GetRequiredService<ILogger<Program>>();
                 message.LogError(ex.ToString(), "An Error has Occured");
             }
-            
+
             await host.RunAsync();
 
         }
