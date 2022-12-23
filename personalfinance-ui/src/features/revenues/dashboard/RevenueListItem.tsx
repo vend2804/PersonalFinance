@@ -2,14 +2,14 @@ import { format } from "date-fns";
 import React from "react";
 import { Link } from "react-router-dom";
 import { Button, Item, Segment, Icon } from "semantic-ui-react";
-import { Activity } from "../../../app/models/activity";
 //import { useStore } from "../../../app/stores/store";
+import { Revenue } from '../../../app/models/revenue';
 
 interface Props {
-  activity: Activity;
+  revenue: Revenue;
 }
 
-export default function ActivityListItem({ activity }: Props) {
+export default function RevenueListItem({ revenue }: Props) {
 
   return (
     <Segment.Group>
@@ -18,30 +18,30 @@ export default function ActivityListItem({ activity }: Props) {
               <Item>
                 <Item.Image size='tiny' circular src='/assets/user.png'/>
                 <Item.Content>
-                    <Item.Header as={Link} to={`/activities/${activity.id}`}>
-                      {activity.title}
+                    <Item.Header as={Link} to={`/revenues/${revenue.rev_Id}`}>
+                      {revenue.rev_Amount}
                       </Item.Header>
-                      <Item.Description>hosted by Me</Item.Description>
+                      <Item.Description>Revenue Amount</Item.Description>
                   </Item.Content>
                 </Item>
             </Item.Group>
           </Segment>
           <Segment>
             <span>
-              <Icon name='clock' /> {format(activity.date!, 'dd MMM yyyy h:mm aa')}
-              <Icon name='marker' /> {activity.venue}
+              <Icon name='clock' /> {format(revenue.rev_Date!, 'dd MMM yyyy h:mm aa')}
+              <Icon name='marker' /> {revenue.rev_Desc}
               </span>
             </Segment>
             <Segment secondary>
-             Attendees goes her
+             Revenue occured by {revenue.rev_By}
              </Segment>
 
              <Segment clearing>
             <span>
-             {activity.description}
+             {revenue.rev_Desc}
              </span>
              <Button as= {Link}
-             to={`/activities/${activity.id}`}
+             to={`/revenues/${revenue.rev_Id}`}
              color='teal'
              floated='right'
              content='view' />

@@ -5,6 +5,7 @@ import { Revenue } from "../models/revenue";
 import { router } from "../router/Routes";
 import { store } from "../stores/store";
 
+
 const sleep = (delay: number) => {
   return new Promise((resolve) => {
     setTimeout(resolve, delay);
@@ -23,7 +24,7 @@ axios.interceptors.response.use(
     switch (status) {
       case 400:
         if (config.method === "get" && data.errors.hasOwnProperty("id")) {
-          router.navigate('/not-found');
+          router.navigate("/not-found");
         }
         if (data.errors) {
           const modalStateErrors = [];
@@ -85,7 +86,10 @@ const Revenues = {
     axios.put<void>(`/revenues/${revenue.rev_Id}`, revenue),
   delete: (id: string) => axios.delete<void>(`/revenues/${id}`),
 };
-
+/* const Item = {
+  list: ()=>requests.get<Item[]>('/item'),
+};
+ */
 const agent = { Activities, Revenues };
 
 export default agent;

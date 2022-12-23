@@ -4,6 +4,7 @@ import RevenueList from "./RevenueList";
 import { useStore } from "../../../app/stores/store";
 import { observer } from "mobx-react-lite";
 import LoadingComponent from "../../../app/layout/LoadingComponent";
+import RevenueFilters from './RevenueFilters';
 
 export default observer(function RevenueDashboard() {
   const { revenueStore } = useStore();
@@ -23,8 +24,7 @@ export default observer(function RevenueDashboard() {
         <RevenueList />
       </Grid.Column>
       <Grid.Column width="6">
-        <h2>
-        REvenue Filters</h2>
+     <RevenueFilters />
         </Grid.Column>
     </Grid>
   );

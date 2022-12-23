@@ -1,6 +1,7 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import { Revenue } from "../models/revenue";
 import agent from "../api/agent";
+import { format } from "date-fns";
 
 export default class RevenueStore {
   // activities: Activity[] = [];
@@ -10,7 +11,7 @@ export default class RevenueStore {
   revenueMode = false;
 
   loading = false;
-  loadingInitial = true;
+  loadingInitial = false;
 
   constructor() {
     makeAutoObservable(this);
@@ -18,7 +19,18 @@ export default class RevenueStore {
 
   get revenuesByDate() {
     return Array.from(this.revenueRegistry.values()).sort(
-      (a, b) => Date.parse(a.rev_Date) - Date.parse(b.rev_Date)
+      (a, b) => a.rev_Date!.getTime() - b.rev_Date!.getTime()
+    );
+  }
+  get groupedRevenues() {
+    return Object.entries(
+      this.revenuesByDate.reduce((revenues, revenue) => {
+        const date =  format(revenue.rev_Date!,'dd MMM yyyy');
+        revenues[date] = revenues[date]
+          ? [...revenues[date], revenue]
+          : [revenue];
+        return revenues;
+      }, {} as { [key: string]: Revenue[] })
     );
   }
   loadRevenues = async () => {
@@ -62,9 +74,9 @@ export default class RevenueStore {
   };
 
   private setRevenue = (revenue: Revenue) => {
-    revenue.rev_Date = revenue.rev_Date.split("T")[0];
+    revenue.rev_Date = new Date(revenue.rev_Date!)
     //this.activities.push(activity);
-    this.revenueRegistry.set(revenue.rev_Id, revenue);
+    this.revenueRegistry.set(revenue.rev_Id.toString(), revenue);
   };
   private getRevenue = (id: string) => {
     return this.revenueRegistry.get(id);
@@ -83,7 +95,7 @@ export default class RevenueStore {
       await agent.Revenues.create(revenue);
       runInAction(() => {
         //this.activities.push(activity);
-        this.revenueRegistry.set(revenue.rev_Id, revenue);
+        this.revenueRegistry.set(revenue.rev_Id.toString(), revenue);
         this.selectedRevenue = revenue;
         this.editMode = false;
         this.loading = false;
@@ -102,7 +114,7 @@ export default class RevenueStore {
       await agent.Revenues.update(revenue);
       runInAction(() => {
         // this.activities = [ ...this.activities.filter((a) => a.id !== activity.id),activity];
-        this.revenueRegistry.set(revenue.rev_Id, revenue);
+        this.revenueRegistry.set(revenue.rev_Id.toString(), revenue);
         this.selectedRevenue = revenue;
         //this.activities.push(activity);
         this.editMode = false;
