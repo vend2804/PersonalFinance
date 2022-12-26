@@ -52,13 +52,16 @@ namespace PersonalFinanceAPI.Controllers
 
                 if(await _userManager.Users.AnyAsync(x => x.UserName == registerDto.UserName ))
                 {
-                    return BadRequest("UserName Already Taken");
+                    ModelState.AddModelError("UserName", "UserName Already Taken");
+                    return ValidationProblem();
+                    //return BadRequest("UserName Already Taken");
 
                 }
 
                     if(await _userManager.Users.AnyAsync(x => x.Email == registerDto.Email ))
                 {
-                    return BadRequest("Email Already Taken");
+                    ModelState.AddModelError("Email", "Email Already Taken");
+                     return ValidationProblem();
 
                 }
 

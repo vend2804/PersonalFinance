@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace PersonalFinanceAPI.Controllers
 {
+[AllowAnonymous]
    // [Route("api/[controller]")]
     public class ActivitiesController : BaseApiController
     {
