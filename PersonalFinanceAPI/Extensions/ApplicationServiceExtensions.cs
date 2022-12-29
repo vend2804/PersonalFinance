@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.OpenApi.Models;
@@ -13,6 +9,8 @@ using Application.Activities;
 using AutoMapper;
 using FluentValidation.AspNetCore;
 using FluentValidation;
+using Application.Interfaces;
+using Infrastructure.Security;
 
 namespace PersonalFinanceAPI.Extensions
 {
@@ -30,11 +28,18 @@ namespace PersonalFinanceAPI.Extensions
                 opt.UseSqlite(config.GetConnectionString("DefaultConnection"));
             });
             services.AddEndpointsApiExplorer();
-            services.AddCors();
+            services.AddCors(opt=>{
+                    opt.AddPolicy("CorsPolicy", policy =>
+                    {
+                        policy.AllowAnyMethod().AllowAnyHeader().WithOrigins("http://localhost:3000");
+                    });
+            });
             services.AddMediatR(typeof(List.Handler).Assembly);
             services.AddAutoMapper(typeof(MappingProfiles).Assembly);
             services.AddFluentValidationAutoValidation();
             services.AddValidatorsFromAssemblyContaining<Create>();
+            services.AddHttpContextAccessor();
+            services.AddScoped<IUserAccessor, UserAccessor>();
 
             return services;
 

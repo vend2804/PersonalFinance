@@ -5,9 +5,11 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Application.Categories;
 using Domain;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PersonalFinanceAPI.Controllers
 {
+    [AllowAnonymous]
     //[ApiController]
    // [Route("api/[controller]")]
     public class CategoriesController : BaseApiController

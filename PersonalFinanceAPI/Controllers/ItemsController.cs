@@ -5,10 +5,11 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Application.Items;
 using Domain;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PersonalFinanceAPI.Controllers
 {
-
+[AllowAnonymous]
     public class ItemsController : BaseApiController
     {
          [HttpGet]

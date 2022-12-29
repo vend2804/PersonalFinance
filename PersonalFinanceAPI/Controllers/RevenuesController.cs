@@ -5,9 +5,11 @@ using System.Threading.Tasks;
 using Application.Revenues;
 using Domain;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PersonalFinanceAPI.Controllers
 {
+    [AllowAnonymous]
     //[ApiController]
    // [Route("api/[controller]")]
     public class RevenuesController : BaseApiController
