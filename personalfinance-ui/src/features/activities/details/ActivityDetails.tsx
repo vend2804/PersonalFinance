@@ -1,8 +1,8 @@
 import { observer } from "mobx-react-lite";
 import { useEffect } from "react";
 
-import {  useParams } from "react-router-dom";
-import {  Grid } from "semantic-ui-react";
+import { useParams } from "react-router-dom";
+import { Grid } from "semantic-ui-react";
 import LoadingComponent from "../../../app/layout/LoadingComponent";
 
 import { useStore } from "../../../app/stores/store";
@@ -18,7 +18,7 @@ export default observer(function ActivityDetails() {
     loadActivity,
     loadingInitial,
   } = activityStore;
-  const { id } = useParams();
+  const { id } = useParams<{ id: string }>(); //useParams();
 
   useEffect(() => {
     if (id) loadActivity(id);
@@ -34,8 +34,8 @@ export default observer(function ActivityDetails() {
         <ActivityDetailedChat />
       </Grid.Column>
       <Grid.Column width={6}>
-        <ActivityDetailedSidebar/>
-        </Grid.Column>
+        <ActivityDetailedSidebar activity={activity} />
+      </Grid.Column>
     </Grid>
   );
 });
