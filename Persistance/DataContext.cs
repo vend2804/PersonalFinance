@@ -19,6 +19,11 @@ namespace Persistance
 
         public DbSet<ActivityAttendee> ActivityAttendees { get; set; } = null!;
 
+        public DbSet<Photo> Photos {get;set;}
+
+
+        //My App
+
         public DbSet<Category> Category_Details { get; set; } = null!;
 
          public DbSet<Item> Item_Details { get; set; } = null!;
