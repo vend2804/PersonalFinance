@@ -23,6 +23,8 @@ using PersonalFinanceAPI.Extensions;
 using PersonalFinanceAPI.Middleware;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.AspNetCore.SignalR;
+using PersonalFinanceAPI.SignalR;
 
 namespace PersonalFinance
 {
@@ -80,18 +82,25 @@ namespace PersonalFinance
             app.UseRouting();
 
             app.UseCors(x => x
-                    .AllowAnyOrigin()
+                    .WithOrigins("http://localhost:3000")
                     .AllowAnyMethod()
+                    .AllowCredentials()
                     .AllowAnyHeader());
             // global error handler
 
             app.UseAuthentication();
             app.UseAuthorization();
 
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHub<ChatHub>("/chat");
             });
+
+
+
+
 
         }
     }

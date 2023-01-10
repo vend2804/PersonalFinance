@@ -21,6 +21,8 @@ namespace Persistance
 
         public DbSet<Photo> Photos {get;set;}
 
+        public DbSet<Comment> Comments {get;set;}
+
 
         //My App
 
@@ -48,6 +50,13 @@ namespace Persistance
             .HasOne(u => u.Activity)
             .WithMany(a => a.Attendees)
             .HasForeignKey(aa => aa.ActivityId);
+
+            // Cascade DElete Relations.
+            builder.Entity<Comment>()
+                .HasOne(a => a.Activity)
+                .WithMany(c => c.Comments)
+                .OnDelete(DeleteBehavior.Cascade);
+
         }
 
     }
